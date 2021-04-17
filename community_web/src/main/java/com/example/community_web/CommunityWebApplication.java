@@ -5,19 +5,32 @@ import com.example.community_web.domain.User;
 import com.example.community_web.domain.enums.BoardType;
 import com.example.community_web.repository.BoardRepository;
 import com.example.community_web.repository.UserRepository;
+import com.example.community_web.resolver.UserArgumentResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootApplication
-public class CommunityWebApplication {
+public class CommunityWebApplication extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    private UserArgumentResolver userArgumentResolver;
 
     public static void main(String[] args) {
         SpringApplication.run(CommunityWebApplication.class, args);
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        super.addArgumentResolvers(argumentResolvers);
     }
 
     @Bean
