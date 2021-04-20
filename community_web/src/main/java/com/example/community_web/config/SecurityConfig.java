@@ -20,23 +20,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.example.community_web.domain.enums.SocialType.GOOGLE;
 import static com.example.community_web.domain.enums.SocialType.KAKAO;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         http
                 .authorizeRequests()
-                .antMatchers("/", "/oauth2/**", "/login/**",  "/css/**", "/images/**", "/js/**", "/console/**").permitAll()
-//                .antMatchers("/facebook").hasAuthority(FACEBOOK.getRoleType())
-//                .antMatchers("/google").hasAuthority(GOOGLE.getRoleType())
-                .antMatchers("/kakao").hasAuthority(KAKAO.getRoleType())
-                .anyRequest().authenticated()
+                    .antMatchers("/", "/oauth2/**", "/login/**",  "/css/**", "/images/**", "/js/**", "/console/**").permitAll()
+                    .antMatchers("/google").hasAuthority(GOOGLE.getRoleType())
+                    .antMatchers("/kakao").hasAuthority(KAKAO.getRoleType())
+                    .anyRequest().authenticated()
                 .and()
                     .oauth2Login()
                     .defaultSuccessUrl("/loginSuccess")
@@ -61,7 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties, @Value("${custom.oauth2.kakao.client-id}") String kakaoClientId) {
+    public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties,
+                                                                     @Value("${custom.oauth2.kakao.client-id}") String kakaoClientId) {
         List<ClientRegistration> registrations = oAuth2ClientProperties.getRegistration().keySet().stream()
                 .map(client -> getRegistration(oAuth2ClientProperties, client))
                 .filter(Objects::nonNull)
