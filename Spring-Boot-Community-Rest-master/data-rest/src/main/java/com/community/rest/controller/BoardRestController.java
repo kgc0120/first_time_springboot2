@@ -35,6 +35,7 @@ public class BoardRestController {
 
         Resources<Board> resources = new Resources<>(boardList);
         resources.add(linkTo(methodOn(BoardRestController.class).basicTest()).withSelfRel());
+        System.out.println("commit test");
         return ResponseEntity.ok(resources);
     }
 
